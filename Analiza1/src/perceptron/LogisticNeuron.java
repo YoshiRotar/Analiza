@@ -1,17 +1,17 @@
 package perceptron;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+import java.lang.Math;
 
 public class LogisticNeuron extends Neuron
 {
-	
-	// ???
+	//https://stats.stackexchange.com/questions/47590/what-are-good-initial-weights-in-a-neural-network
 	protected void initializeWeights(int n)
 	{
-		Random random = new Random();
+		double range = 1/( Math.sqrt(n) );
 		for(int i=0; i<n; i++)
 		{
-			weights.add(random.nextDouble());
+			weights.add(ThreadLocalRandom.current().nextDouble(-range, range));
 		}
 	}
 	
