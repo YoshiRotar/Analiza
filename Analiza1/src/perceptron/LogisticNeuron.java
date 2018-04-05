@@ -21,4 +21,9 @@ public class LogisticNeuron extends Neuron
 		result = 1.0/result;
 		return result;
 	}
+
+	protected double derivativeOfActivationFunction(double sum) 
+	{
+		return activationFunction(sum)*(1-activationFunction(sum));
+	}
 }

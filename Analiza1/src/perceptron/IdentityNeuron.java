@@ -1,5 +1,7 @@
 package perceptron;
 
+
+// Czy w ogole potrzebny?
 public class IdentityNeuron extends Neuron
 {
 	protected void initializeWeights(int n)
@@ -15,5 +17,9 @@ public class IdentityNeuron extends Neuron
 		return sum;
 	}
 	
-	
+	//???
+	protected double derivativeOfActivationFunction(double sum) 
+	{
+		return 0;
+	}
 }
