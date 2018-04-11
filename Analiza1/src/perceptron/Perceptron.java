@@ -59,6 +59,7 @@ public class Perceptron
 		return inputs;
 	}
 	
+	/*
 	public void backPropagation(ArrayList<Double> errors, double rateOfChange) throws Exception
 	{
 		System.out.println(errors);
@@ -76,6 +77,7 @@ public class Perceptron
 			throw new Exception();
 		}
 	}
+	*/
 	
 	public void cycle(ArrayList<Double> initialInputs, ArrayList<Double> expectedOutputs) throws Exception
 	{

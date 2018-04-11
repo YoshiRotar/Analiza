@@ -21,7 +21,7 @@ public class Main {
 			p.getExamplesFromFile("./data/data.txt", 4, 4);
 			p.initializePerceptron();
 			p.learn(2000);
-			ArrayList<Double> inputs = new ArrayList<Double>(Arrays.asList(1.0, 0.0, 0.0, 0.0));
+			ArrayList<Double> inputs = new ArrayList<Double>(Arrays.asList(0.0, 0.0, 1.0, 0.0));
 			ArrayList<Double> outputs = p.process(inputs);
 			System.out.println(outputs);
 		} 
