@@ -48,7 +48,7 @@ public abstract class Neuron
 	protected double sum()
 	{
 		double result = 0;
-		for(int i=0; i<inputs.size(); i++)
+		for(int i=0; i<weights.size(); i++)
 		{
 			result += inputs.get(i)*weights.get(i);
 		}

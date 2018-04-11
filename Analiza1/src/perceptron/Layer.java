@@ -8,6 +8,11 @@ public class Layer
 	private ArrayList<Double> inputs = new ArrayList<Double>();
 	private ArrayList<Double> outputs = new ArrayList<Double>();
 	
+	public void addNeuron(Neuron n)
+	{
+		neurons.add(n);
+	}
+	
 	public int getNumberOfNeurons()
 	{
 		return neurons.size();
@@ -23,14 +28,25 @@ public class Layer
 		return outputs;
 	}
 	
+	public void fillWithLogisticNeurons(int n)
+	{
+		Neuron neuron;
+		for(int i=0; i<n; i++)
+		{
+			neuron = new LogisticNeuron();
+			addNeuron(neuron);
+		}
+	}
+	
 	public void process()
 	{
+		outputs = new ArrayList<Double>();
 		for(int i = 0; i<neurons.size(); i++)
 		{
 			Neuron neuron = neurons.get(i);
 			neuron.setInputs(inputs);
 			neuron.process();
-			outputs.set(i, neuron.getOutput());
+			outputs.add(i, neuron.getOutput());
 		}
 	}
 	
@@ -51,9 +67,9 @@ public class Layer
 		{
 			ArrayList<Double> errorsFromCurrentNeuron = neurons.get(i).backPropagation(errors.get(i), rateOfChange);
 			if(errorsFromCurrentNeuron.size()!=errorsForNext.size()) throw new Exception();
-			for(int j=0; i<errorsForNext.size(); j++)
+			for(int j=0; j<errorsForNext.size(); j++)
 			{
-				errorsForNext.set(j, errorsForNext.get(i) +  errorsFromCurrentNeuron.get(j));
+				errorsForNext.set(j, errorsForNext.get(j) + errorsFromCurrentNeuron.get(j));
 			}
 		}
 		return errorsForNext;

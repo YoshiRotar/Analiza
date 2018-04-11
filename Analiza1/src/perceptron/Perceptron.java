@@ -10,16 +10,37 @@ public class Perceptron
 	private int numberOfInitialInputs;
 	private ArrayList<Layer> layers = new ArrayList<Layer>();
 	private ArrayList<TrainingExample> examples = new ArrayList<TrainingExample>();
-	private double rateOfChange; //chyba powinien byc zwiazany z siecia
+	private double rateOfChange = 0.1;
+	private boolean bias = true;
+	
+
+	public void setBias(boolean bias) 
+	{
+		this.bias = bias;
+	}
+	
+	public void setNumberOfInitialInputs(int inputs)
+	{
+		numberOfInitialInputs = inputs;
+	}
+	
+	public void addLayer(Layer layer)
+	{
+		layers.add(layer);
+	}
 	
 	public void initializePerceptron() throws Exception
 	{
 		//+1 dlatego, ze bias
 		if(layers.size()<1) throw new Exception();
+		int numberOfNeurons = numberOfInitialInputs;
+		if(bias) numberOfNeurons++;
 		layers.get(0).initializeNeurons(numberOfInitialInputs+1);
 		for(int i=1; i<layers.size(); i++)
 		{
-			layers.get(i).initializeNeurons(layers.get(i-1).getNumberOfNeurons()+1);
+			numberOfNeurons = layers.get(i-1).getNumberOfNeurons();
+			if(bias) numberOfNeurons++;
+			layers.get(i).initializeNeurons(numberOfNeurons);
 		}
 	}
 	
@@ -33,13 +54,14 @@ public class Perceptron
 			inputs.add(1.0);
 			layers.get(i).setInputs(inputs);
 			layers.get(i).process();
-			inputs = layers.get(i).getOutputs(); 
+			inputs = layers.get(i).getOutputs();
 		}
 		return inputs;
 	}
 	
 	public void backPropagation(ArrayList<Double> errors, double rateOfChange) throws Exception
 	{
+		System.out.println(errors);
 		if(layers.size()<1) throw new Exception();
 		try
 		{
@@ -57,23 +79,17 @@ public class Perceptron
 	
 	public void cycle(ArrayList<Double> initialInputs, ArrayList<Double> expectedOutputs) throws Exception
 	{
-		try
+		ArrayList<Double> inputs = new ArrayList<Double>(initialInputs);
+		ArrayList<Double> outputs = process(inputs);
+		ArrayList<Double> errors = new ArrayList<Double>(expectedOutputs);
+		if(outputs.size()!=expectedOutputs.size()) throw new Exception();
+		for(int i=0; i<outputs.size(); i++)
 		{
-			ArrayList<Double> outputs = process(initialInputs);
-			ArrayList<Double> errors = expectedOutputs;
-			if(outputs.size()!=expectedOutputs.size()) throw new Exception();
-			for(int i=0; i<outputs.size(); i++)
-			{
-				errors.set(i, errors.get(i) - expectedOutputs.get(i));
-			}
-			for(int i=layers.size()-1; i>=0; i++)
-			{
-				errors = layers.get(i).backPropagation(errors, rateOfChange);
-			}
+			errors.set(i, outputs.get(i) - expectedOutputs.get(i));
 		}
-		catch(Exception e)
+		for(int i=layers.size()-1; i>=0; i--)
 		{
-			throw new Exception();
+			errors = layers.get(i).backPropagation(errors, rateOfChange);
 		}
 	}
 	
@@ -81,14 +97,7 @@ public class Perceptron
 	{
 		for(int i=0; i<examples.size(); i++)
 		{
-			try
-			{
-				cycle(examples.get(i).getInputs(), examples.get(i).getOutputs());
-			}
-			catch (Exception e)
-			{
-				throw new Exception();
-			}
+			cycle(examples.get(i).getInputs(), examples.get(i).getOutputs());
 		}
 	}
 	
@@ -97,20 +106,13 @@ public class Perceptron
 		for(int i=0; i<numberOfAges; i++)
 		{
 			Collections.shuffle(examples);
-			try
-			{
-				age();
-			}
-			catch(Exception e)
-			{
-				throw new Exception();
-			}
-			
+			age();
 		}
 	}
 	
 	public void getExamplesFromFile(String path, int inputs, int outputs) throws Exception
 	{
+		numberOfInitialInputs = inputs;
 		File file = new File(path);
 		try
 		{
@@ -124,7 +126,7 @@ public class Perceptron
 				}
 				for(int i=0; i<outputs; i++)
 				{
-					example.getInputs().add(Double.valueOf(scanner.next()));
+					example.getOutputs().add(Double.valueOf(scanner.next()));
 				}
 				examples.add(example);
 			}
