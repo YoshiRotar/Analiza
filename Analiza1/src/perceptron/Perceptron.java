@@ -1,6 +1,8 @@
 package perceptron;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -11,13 +13,21 @@ public class Perceptron
 	private ArrayList<Layer> layers = new ArrayList<Layer>();
 	private ArrayList<TrainingExample> examples = new ArrayList<TrainingExample>();
 	private double rateOfChange = 0.1;
-	private boolean bias = true;
+	private double momentum = 0.0;
+	private double errorMSE = 0.0;
+	private String logPath = null;
 	
-
-	public void setBias(boolean bias) 
+	public void setLogPath(String logPath) 
 	{
-		this.bias = bias;
+		this.logPath = logPath;
 	}
+
+	public void setMomentum(double momentum) 
+	{
+		this.momentum = momentum;
+	}
+
+	private boolean bias = true;
 	
 	public void setNumberOfInitialInputs(int inputs)
 	{
@@ -27,6 +37,12 @@ public class Perceptron
 	public void addLayer(Layer layer)
 	{
 		layers.add(layer);
+	}
+	
+	// O S T R O ¯ N I E !
+	public void setBias(boolean bias) 
+	{
+		this.bias = bias;
 	}
 	
 	public void initializePerceptron() throws Exception
@@ -79,10 +95,20 @@ public class Perceptron
 	}
 	*/
 	
+	public void addToMSE(ArrayList<Double> outputs, ArrayList<Double> expectedOutputs)
+	{
+		for(int i=0; i<outputs.size(); i++)
+		{
+			double difference = outputs.get(i)-expectedOutputs.get(i);
+			errorMSE+=difference*difference;
+		}
+	}
+	
 	public void cycle(ArrayList<Double> initialInputs, ArrayList<Double> expectedOutputs) throws Exception
 	{
 		ArrayList<Double> inputs = new ArrayList<Double>(initialInputs);
 		ArrayList<Double> outputs = process(inputs);
+		addToMSE(outputs, expectedOutputs);
 		ArrayList<Double> errors = new ArrayList<Double>(expectedOutputs);
 		if(outputs.size()!=expectedOutputs.size()) throw new Exception();
 		for(int i=0; i<outputs.size(); i++)
@@ -91,20 +117,23 @@ public class Perceptron
 		}
 		for(int i=layers.size()-1; i>=0; i--)
 		{
-			errors = layers.get(i).backPropagation(errors, rateOfChange);
+			errors = layers.get(i).backPropagation(errors, rateOfChange, momentum);
 		}
 	}
 	
 	public void age() throws Exception
 	{
+		errorMSE=0;
 		for(int i=0; i<examples.size(); i++)
 		{
 			cycle(examples.get(i).getInputs(), examples.get(i).getOutputs());
 		}
+		if(logPath!=null) log(errorMSE);
 	}
 	
 	public void learn(int numberOfAges) throws Exception
 	{
+		if(logPath!=null) clearLog();
 		for(int i=0; i<numberOfAges; i++)
 		{
 			Collections.shuffle(examples);
@@ -137,6 +166,36 @@ public class Perceptron
 		catch(Exception e)
 		{
 			throw new Exception();
+		}
+	}
+	
+	private void clearLog()
+	{
+		FileWriter writer;
+		try 
+		{
+			writer = new FileWriter(logPath);
+			writer.write("");
+			writer.close();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	private void log(double value)
+	{
+		FileWriter writer;
+		try 
+		{
+			writer = new FileWriter(logPath,true);
+			writer.write(value+"\n");
+			writer.close();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
 		}
 	}
 

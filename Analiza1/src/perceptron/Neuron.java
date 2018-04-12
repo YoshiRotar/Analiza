@@ -7,6 +7,7 @@ public abstract class Neuron
 	protected ArrayList<Double> inputs = new ArrayList<Double>();
 	protected ArrayList<Double> weights = new ArrayList<Double>();
 	protected double output;
+	protected  ArrayList<Double> lastIncrement = new ArrayList<Double>();
 	
 	public double getOutput()
 	{
@@ -30,7 +31,7 @@ public abstract class Neuron
 	}
 	
 	//Funkcja zwraca wektor bledow dla poszczegolnych wag
-	protected ArrayList<Double> backPropagation(double error, double rateOfChange)
+	protected ArrayList<Double> backPropagation(double error, double rateOfChange, double momentum)
 	{
 		ArrayList<Double> errors = new ArrayList<Double>();
 		double errorOfNeuron = errorOfNeuron(error);
@@ -40,7 +41,10 @@ public abstract class Neuron
 		}
 		for(int i=0; i<weights.size(); i++)
 		{
-			weights.set(i, weights.get(i)-rateOfChange*errorOfNeuron*inputs.get(i));
+			if(lastIncrement.size()<=i) lastIncrement.add(0.0);
+			double newIncrement = (-rateOfChange*errorOfNeuron*inputs.get(i) + momentum*lastIncrement.get(i));
+			weights.set(i, weights.get(i)+newIncrement);
+			lastIncrement.set(i, newIncrement);
 		}
 		return errors;
 	}

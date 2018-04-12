@@ -19,6 +19,7 @@ public class Main {
 		try 
 		{
 			p.getExamplesFromFile("./data/data.txt", 4, 4);
+			p.setLogPath("./data/transformation.txt");
 			p.initializePerceptron();
 			p.learn(2000);
 			ArrayList<Double> inputs = new ArrayList<Double>(Arrays.asList(0.0, 0.0, 1.0, 0.0));
