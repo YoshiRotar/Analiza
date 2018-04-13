@@ -16,6 +16,7 @@ public class Perceptron
 	private double momentum = 0.0;
 	private double errorMSE = 0.0;
 	private String logPath = null;
+	private boolean bias = true;
 	
 	public void setLogPath(String logPath) 
 	{
@@ -26,8 +27,6 @@ public class Perceptron
 	{
 		this.momentum = momentum;
 	}
-
-	private boolean bias = true;
 	
 	public void setNumberOfInitialInputs(int inputs)
 	{
@@ -49,14 +48,14 @@ public class Perceptron
 	{
 		//+1 dlatego, ze bias
 		if(layers.size()<1) throw new Exception();
-		int numberOfNeurons = numberOfInitialInputs;
-		if(bias) numberOfNeurons++;
-		layers.get(0).initializeNeurons(numberOfInitialInputs+1);
+		int numberOfWeights = numberOfInitialInputs;
+		if(bias) numberOfWeights++;
+		layers.get(0).initializeNeurons(numberOfWeights);
 		for(int i=1; i<layers.size(); i++)
 		{
-			numberOfNeurons = layers.get(i-1).getNumberOfNeurons();
-			if(bias) numberOfNeurons++;
-			layers.get(i).initializeNeurons(numberOfNeurons);
+			numberOfWeights = layers.get(i-1).getNumberOfNeurons();
+			if(bias) numberOfWeights++;
+			layers.get(i).initializeNeurons(numberOfWeights);
 		}
 	}
 	
@@ -67,7 +66,7 @@ public class Perceptron
 		for(int i=0; i<layers.size(); i++)
 		{
 			//bias
-			inputs.add(1.0);
+			if(bias) inputs.add(1.0);
 			layers.get(i).setInputs(inputs);
 			layers.get(i).process();
 			inputs = layers.get(i).getOutputs();

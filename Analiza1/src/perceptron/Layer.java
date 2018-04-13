@@ -41,7 +41,7 @@ public class Layer
 	public void process()
 	{
 		outputs = new ArrayList<Double>();
-		for(int i = 0; i<neurons.size(); i++)
+		for(int i=0; i<neurons.size(); i++)
 		{
 			Neuron neuron = neurons.get(i);
 			neuron.setInputs(inputs);
