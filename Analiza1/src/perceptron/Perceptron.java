@@ -127,7 +127,7 @@ public class Perceptron
 		{
 			cycle(examples.get(i).getInputs(), examples.get(i).getOutputs());
 		}
-		if(logPath!=null) log(errorMSE);
+		if(logPath!=null) log(errorMSE/examples.size());
 	}
 	
 	public void learn(int numberOfAges) throws Exception
