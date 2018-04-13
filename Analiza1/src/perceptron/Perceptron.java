@@ -12,6 +12,7 @@ public class Perceptron
 	private int numberOfInitialInputs;
 	private ArrayList<Layer> layers = new ArrayList<Layer>();
 	private ArrayList<TrainingExample> examples = new ArrayList<TrainingExample>();
+	private ArrayList<TrainingExample> testExamples = new ArrayList<TrainingExample>();
 	private double rateOfChange = 0.1;
 	private double momentum = 0.0;
 	private double errorMSE = 0.0;
@@ -123,11 +124,22 @@ public class Perceptron
 	public void age() throws Exception
 	{
 		errorMSE=0;
+		String stringToLog = new String();
 		for(int i=0; i<examples.size(); i++)
 		{
 			cycle(examples.get(i).getInputs(), examples.get(i).getOutputs());
 		}
-		if(logPath!=null) log(errorMSE/examples.size());
+		stringToLog += errorMSE/examples.size();
+		stringToLog += " ";
+		errorMSE=0;
+		ArrayList<Double> testOutputs = new ArrayList<Double>();
+		for(int i=0; i<testExamples.size(); i++)
+		{
+			testOutputs = process(testExamples.get(i).getInputs());
+			addToMSE(testExamples.get(i).getOutputs(), testOutputs);
+		}
+		if(errorMSE!=0) stringToLog += errorMSE/examples.size();
+		if(logPath!=null) log(stringToLog);
 	}
 	
 	public void learn(int numberOfAges) throws Exception
@@ -140,7 +152,7 @@ public class Perceptron
 		}
 	}
 	
-	public void getExamplesFromFile(String path, int inputs, int outputs) throws Exception
+	private void getExamplesFromFile(String path, int inputs, int outputs, ArrayList<TrainingExample> target) throws Exception
 	{
 		numberOfInitialInputs = inputs;
 		File file = new File(path);
@@ -158,7 +170,7 @@ public class Perceptron
 				{
 					example.getOutputs().add(Double.valueOf(scanner.next()));
 				}
-				examples.add(example);
+				target.add(example);
 			}
 			scanner.close();
 		}
@@ -166,6 +178,16 @@ public class Perceptron
 		{
 			throw new Exception();
 		}
+	}
+	
+	public void getTrainingExamplesFromFile(String path, int inputs, int outputs) throws Exception
+	{
+		getExamplesFromFile(path, inputs, outputs, this.examples);
+	}
+	
+	public void getTestExamplesFromFile(String path, int inputs, int outputs) throws Exception
+	{
+		getExamplesFromFile(path, inputs, outputs, this.testExamples);
 	}
 	
 	private void clearLog()
@@ -183,13 +205,13 @@ public class Perceptron
 		}
 	}
 	
-	private void log(double value)
+	private void log(String text)
 	{
 		FileWriter writer;
 		try 
 		{
 			writer = new FileWriter(logPath,true);
-			writer.write(value+"\n");
+			writer.write(text+"\n");
 			writer.close();
 		} 
 		catch (IOException e) 

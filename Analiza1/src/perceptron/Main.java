@@ -15,10 +15,11 @@ public class Main {
 		Perceptron p = new Perceptron();
 		p.addLayer(layer1);
 		p.addLayer(layer2);
-		//p.setBias(false);
+		p.setBias(false);
 		try 
 		{
-			p.getExamplesFromFile("./data/data.txt", 4, 4);
+			p.getTrainingExamplesFromFile("./data/data.txt", 4, 4);
+			p.getTestExamplesFromFile("./data/data.txt", 4, 4);
 			p.setLogPath("./data/transformation.txt");
 			p.initializePerceptron();
 			p.learn(2000);

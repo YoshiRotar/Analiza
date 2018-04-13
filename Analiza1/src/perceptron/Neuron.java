@@ -54,7 +54,6 @@ public abstract class Neuron
 		double result = 0;
 		for(int i=0; i<weights.size(); i++)
 		{
-			//System.out.println(inputs.size() + " " + weights.size());
 			result += inputs.get(i)*weights.get(i);
 		}
 		return result;
