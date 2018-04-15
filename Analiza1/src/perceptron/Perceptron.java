@@ -3,6 +3,8 @@ package perceptron;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -16,12 +18,17 @@ public class Perceptron
 	private double rateOfChange = 0.1;
 	private double momentum = 0.0;
 	private double errorMSE = 0.0;
-	private String logPath = null;
+	private Path logPath = null;
 	private boolean bias = true;
 	
-	public void setLogPath(String logPath) 
+	public void setRateOfChange(double rateOfChange) 
 	{
-		this.logPath = logPath;
+		this.rateOfChange = rateOfChange;
+	}
+	
+	public void setLogPath(String path) 
+	{
+		this.logPath = Paths.get(path);
 	}
 
 	public void setMomentum(double momentum) 
@@ -195,7 +202,9 @@ public class Perceptron
 		FileWriter writer;
 		try 
 		{
-			writer = new FileWriter(logPath);
+			File file = logPath.getParent().toFile();
+			file.mkdirs();
+			writer = new FileWriter(logPath.toFile());
 			writer.write("");
 			writer.close();
 		} 
@@ -207,10 +216,12 @@ public class Perceptron
 	
 	private void log(String text)
 	{
+		File file = logPath.getParent().toFile();
+		file.mkdirs();
 		FileWriter writer;
 		try 
 		{
-			writer = new FileWriter(logPath,true);
+			writer =  new FileWriter(logPath.toFile(),true);
 			writer.write(text+"\n");
 			writer.close();
 		} 
