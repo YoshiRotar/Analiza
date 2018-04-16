@@ -7,7 +7,7 @@ public abstract class Neuron
 	protected ArrayList<Double> inputs = new ArrayList<Double>();
 	protected ArrayList<Double> weights = new ArrayList<Double>();
 	protected double output;
-	protected  ArrayList<Double> lastIncrement = new ArrayList<Double>();
+	protected ArrayList<Double> lastIncrement = new ArrayList<Double>();
 	
 	public double getOutput()
 	{

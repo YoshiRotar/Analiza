@@ -46,7 +46,12 @@ public class Perceptron
 		layers.add(layer);
 	}
 	
-	// O S T R O ¯ N I E !
+	public void resetExamples()
+	{
+		examples = new ArrayList<TrainingExample>();
+	}
+	
+	// O S T R O ï¿½ N I E !
 	public void setBias(boolean bias) 
 	{
 		this.bias = bias;
@@ -137,7 +142,7 @@ public class Perceptron
 			cycle(examples.get(i).getInputs(), examples.get(i).getOutputs());
 		}
 		stringToLog += errorMSE/examples.size();
-		stringToLog += " ";
+		stringToLog += ",";
 		errorMSE=0;
 		ArrayList<Double> testOutputs = new ArrayList<Double>();
 		for(int i=0; i<testExamples.size(); i++)
@@ -156,6 +161,39 @@ public class Perceptron
 		{
 			Collections.shuffle(examples);
 			age();
+		}
+	}
+	
+	public void sendOutputToLog()
+	{
+		ArrayList<Double> outputs = new ArrayList<Double>();
+		ArrayList<Double> inputs = new ArrayList<Double>();
+		String stringToLog = new String();
+		
+		for(int i=0;i<examples.size();i++)
+		{
+			outputs = new ArrayList<Double>();
+			inputs = examples.get(i).getInputs();
+			try 
+			{
+				outputs = process(inputs);
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+			for(int j=0;j<outputs.size();j++)
+			{
+				stringToLog += outputs.get(j);
+				stringToLog += ",";
+			}
+			stringToLog += "\n";
+		}
+		
+		if(logPath!=null) 
+		{
+			clearLog();
+			log(stringToLog);
 		}
 	}
 	
