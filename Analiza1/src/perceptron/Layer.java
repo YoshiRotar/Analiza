@@ -38,6 +38,16 @@ public class Layer
 		}
 	}
 	
+	public void fillWithLinearNeurons(int n)
+	{
+		Neuron neuron;
+		for(int i=0; i<n; i++)
+		{
+			neuron = new LinearNeuron();
+			addNeuron(neuron);
+		}
+	}
+	
 	public void process()
 	{
 		outputs = new ArrayList<Double>();

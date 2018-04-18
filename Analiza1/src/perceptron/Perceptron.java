@@ -150,7 +150,7 @@ public class Perceptron
 			testOutputs = process(testExamples.get(i).getInputs());
 			addToMSE(testExamples.get(i).getOutputs(), testOutputs);
 		}
-		if(errorMSE!=0) stringToLog += errorMSE/examples.size();
+		if(errorMSE!=0) stringToLog += errorMSE/testExamples.size();
 		if(logPath!=null) log(stringToLog);
 	}
 	
@@ -164,32 +164,43 @@ public class Perceptron
 		}
 	}
 	
-	public void sendOutputToLog()
+	private String makeStringToLog(TrainingExample example)
 	{
 		ArrayList<Double> outputs = new ArrayList<Double>();
 		ArrayList<Double> inputs = new ArrayList<Double>();
 		String stringToLog = new String();
 		
+		outputs = new ArrayList<Double>();
+		inputs = example.getInputs();
+		try 
+		{
+			outputs = process(inputs);
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		for(int j=0;j<outputs.size();j++)
+		{
+			stringToLog += outputs.get(j);
+			stringToLog += ",";
+		}
+		return stringToLog += "\n";
+	}
+	
+	public void sendOutputToLog()
+	{
+		String stringToLog = new String();
+		
+		// Do przemyslenia: examples i test examples czy tylko testexamples
 		for(int i=0;i<examples.size();i++)
 		{
-			outputs = new ArrayList<Double>();
-			inputs = examples.get(i).getInputs();
-			try 
-			{
-				outputs = process(inputs);
-			} 
-			catch (Exception e) 
-			{
-				e.printStackTrace();
-			}
-			for(int j=0;j<outputs.size();j++)
-			{
-				stringToLog += outputs.get(j);
-				stringToLog += ",";
-			}
-			stringToLog += "\n";
+			stringToLog += makeStringToLog(examples.get(i));
 		}
-		
+		for(int i=0;i<testExamples.size();i++)
+		{
+			stringToLog += makeStringToLog(testExamples.get(i));
+		}
 		if(logPath!=null) 
 		{
 			clearLog();

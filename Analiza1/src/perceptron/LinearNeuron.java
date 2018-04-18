@@ -2,7 +2,7 @@ package perceptron;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class LinearNueron extends Neuron
+public class LinearNeuron extends Neuron
 {
 	//https://stats.stackexchange.com/questions/47590/what-are-good-initial-weights-in-a-neural-network
 	protected void initializeWeights(int n)
