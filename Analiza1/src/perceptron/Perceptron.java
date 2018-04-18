@@ -49,6 +49,7 @@ public class Perceptron
 	public void resetExamples()
 	{
 		examples = new ArrayList<TrainingExample>();
+		testExamples = new ArrayList<TrainingExample>();
 	}
 	
 	// O S T R O Z N I E !
@@ -192,10 +193,12 @@ public class Perceptron
 	{
 		ArrayList<Double> outputs = new ArrayList<Double>();
 		ArrayList<Double> inputs = new ArrayList<Double>();
+		ArrayList<Double> expected = new ArrayList<Double>();
 		String stringToLog = new String();
 		
 		outputs = new ArrayList<Double>();
 		inputs = example.getInputs();
+		expected = example.getOutputs();
 		try 
 		{
 			outputs = process(inputs);
@@ -204,9 +207,24 @@ public class Perceptron
 		{
 			e.printStackTrace();
 		}
+		for(int j=0;j<inputs.size()-1;j++)
+		{
+			stringToLog += inputs.get(j);
+			stringToLog += ",";
+		}
+		if(!bias)
+		{
+			stringToLog += inputs.get(inputs.size()-1);
+			stringToLog += ",";
+		}
 		for(int j=0;j<outputs.size();j++)
 		{
 			stringToLog += outputs.get(j);
+			stringToLog += ",";
+		}
+		for(int j=0;j<expected.size();j++)
+		{
+			stringToLog += expected.get(j);
 			stringToLog += ",";
 		}
 		return stringToLog += "\n";
@@ -217,10 +235,12 @@ public class Perceptron
 		String stringToLog = new String();
 		
 		// Do przemyslenia: examples i test examples czy tylko testexamples
-		for(int i=0;i<examples.size();i++)
+		//System.out.println(examples.get(0).getInputs().size());
+		//System.out.println(testExamples.size());
+		/*for(int i=0;i<examples.size();i++)
 		{
 			stringToLog += makeStringToLog(examples.get(i));
-		}
+		}*/
 		for(int i=0;i<testExamples.size();i++)
 		{
 			stringToLog += makeStringToLog(testExamples.get(i));

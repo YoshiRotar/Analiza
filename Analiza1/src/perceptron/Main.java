@@ -16,7 +16,7 @@ public class Main {
 				layer1.fillWithLogisticNeurons(j);
 				
 				Layer layer2 = new Layer();
-				layer2.fillWithLinearNeurons(3);
+				layer2.fillWithLogisticNeurons(3);
 				
 				Perceptron p = new Perceptron();
 				p.addLayer(layer1);
