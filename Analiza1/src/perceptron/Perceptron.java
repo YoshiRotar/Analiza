@@ -51,10 +51,34 @@ public class Perceptron
 		examples = new ArrayList<TrainingExample>();
 	}
 	
-	// O S T R O � N I E !
+	// O S T R O Z N I E !
 	public void setBias(boolean bias) 
 	{
 		this.bias = bias;
+	}
+	
+	public void ignoreInputs(ArrayList<Integer> toIgnore)
+	{
+		int k=0;
+		for(int i=numberOfInitialInputs-1; i>=0; i--)
+		{
+			for(int j=0; j<toIgnore.size(); j++)
+			{
+				if(i==(toIgnore.get(j)-1))
+				{
+					k++;
+					for(int l=examples.size()-1; l>=0; l--)
+					{
+						examples.get(l).getInputs().remove(i);
+					}
+					for(int l=testExamples.size()-1; l>=0; l--)
+					{
+						testExamples.get(l).getInputs().remove(i);
+					}
+				}
+			}
+		}
+		numberOfInitialInputs-=k;
 	}
 	
 	public void initializePerceptron() throws Exception
@@ -277,6 +301,30 @@ public class Perceptron
 		catch (IOException e) 
 		{
 			e.printStackTrace();
+		}
+	}
+	
+	//Tylko do zadania na 5
+	private void formatOneOutput(ArrayList<Double> outputs)
+	{
+		double n = outputs.get(0);
+		outputs.clear();
+		for(int j=1; j<=3; j++)
+		{
+			if(Math.abs(n-(double)j)<0.1)outputs.add(1.0);
+			else outputs.add(0.0);
+		}
+	}
+	
+	public void formatExampleOutputs()
+	{
+		for(int i=0; i<examples.size(); i++)
+		{
+			formatOneOutput(examples.get(i).getOutputs());
+		}
+		for(int i=0; i<testExamples.size(); i++)
+		{
+			formatOneOutput(testExamples.get(i).getOutputs());
 		}
 	}
 
