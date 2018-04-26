@@ -10,7 +10,7 @@ public class LinearNeuron extends Neuron
 		double range = 1/( Math.sqrt(n) );
 		for(int i=0; i<n; i++)
 		{
-			weights.add(ThreadLocalRandom.current().nextDouble(-range, range));
+			weights.add(2*Math.random()-1.0);
 		}
 	}
 	

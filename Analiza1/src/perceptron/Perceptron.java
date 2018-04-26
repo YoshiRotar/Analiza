@@ -112,26 +112,6 @@ public class Perceptron
 		return inputs;
 	}
 	
-	/*
-	public void backPropagation(ArrayList<Double> errors, double rateOfChange) throws Exception
-	{
-		System.out.println(errors);
-		if(layers.size()<1) throw new Exception();
-		try
-		{
-			ArrayList<Double> tempErrors = layers.get(layers.size()-1).backPropagation(errors, rateOfChange);
-			for(int i=layers.size()-2; i>=0; i++)
-			{
-				tempErrors = layers.get(i).backPropagation(tempErrors, rateOfChange);
-			}
-		}
-		catch(Exception e)
-		{
-			throw new Exception();
-		}
-	}
-	*/
-	
 	public void addToMSE(ArrayList<Double> outputs, ArrayList<Double> expectedOutputs)
 	{
 		for(int i=0; i<outputs.size(); i++)
@@ -233,14 +213,6 @@ public class Perceptron
 	public void sendOutputToLog()
 	{
 		String stringToLog = new String();
-		
-		// Do przemyslenia: examples i test examples czy tylko testexamples
-		//System.out.println(examples.get(0).getInputs().size());
-		//System.out.println(testExamples.size());
-		/*for(int i=0;i<examples.size();i++)
-		{
-			stringToLog += makeStringToLog(examples.get(i));
-		}*/
 		for(int i=0;i<testExamples.size();i++)
 		{
 			stringToLog += makeStringToLog(testExamples.get(i));
