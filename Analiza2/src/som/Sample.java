@@ -5,21 +5,21 @@ import java.util.ArrayList;
 public class Sample 
 {
 	private final ArrayList<Double> point;
-	private ArrayList<Double> centre;
+	private Center center;
 	
 	public Sample(ArrayList<Double> point) 
 	{
 		this.point = point;
 	}
 
-	public ArrayList<Double> getCentre() 
+	public Center getCenter() 
 	{
-		return centre;
+		return center;
 	}
 	
-	public void setCentre(ArrayList<Double> centre) 
+	public void setCenter(Center center) 
 	{
-		this.centre = centre;
+		this.center = center;
 	}
 	
 	public ArrayList<Double> getPoint() 

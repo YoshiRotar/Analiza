@@ -13,13 +13,12 @@ import java.util.ArrayList;
  */
 public abstract class Clustering 
 {
-	protected ArrayList<ArrayList<Double>> centers= new ArrayList<>();
+	protected ArrayList<Center> centers= new ArrayList<>();
 	protected Data data;
 	protected int numberOfDimensions;
 	
 	public Clustering(int numberOfCenters, Data data) 
 	{
-		for(int i=0; i<numberOfCenters; i++) centers.add(new ArrayList<Double>());
 		this.data = data;
 		this.numberOfDimensions=data.getPoints().get(0).getPoint().size();
 	}
@@ -38,7 +37,7 @@ public abstract class Clustering
 	
 	public double error() throws Exception
 	{
-		if(data.getPoints().get(0).getPoint().size()!=data.getPoints().get(0).getCentre().size())
+		if(data.getPoints().get(0).getPoint().size()!=data.getPoints().get(0).getCenter().getCoordinates().size())
 		{
 			throw new Exception("Centra i punkty maja rozna liczbe wspolrzednych");
 		}
@@ -47,7 +46,7 @@ public abstract class Clustering
 		{
 			for(int j=0; j<data.getPoints().get(0).getPoint().size(); j++)
 			{
-				double difference = data.getPoints().get(i).getPoint().get(j) - data.getPoints().get(i).getCentre().get(j);
+				double difference = data.getPoints().get(i).getPoint().get(j) - data.getPoints().get(i).getCenter().getCoordinates().get(j);
 				result += difference*difference;
 			}
 		}
