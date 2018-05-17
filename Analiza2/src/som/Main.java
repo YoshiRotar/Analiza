@@ -19,8 +19,7 @@ public class Main {
     {
     	System.out.println("Start");
         Data d = new Data("./data/inputs.txt",2);
-        KMeans k = new KMeans(6, d, true);
-        k.init();
+        NeuralGas k = new NeuralGas(6, d, 0.1, 3, 1000);
         k.clusterize();
     	System.out.println("Stop");
     }

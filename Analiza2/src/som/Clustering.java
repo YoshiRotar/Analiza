@@ -13,7 +13,6 @@ import java.util.ArrayList;
  */
 public abstract class Clustering 
 {
-	protected ArrayList<Center> centers= new ArrayList<>();
 	protected Data data;
 	protected int numberOfDimensions;
 	

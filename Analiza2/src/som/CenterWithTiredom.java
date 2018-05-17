@@ -1,11 +1,14 @@
 package som;
 
-public class CenterWithTiredom extends Center
+public class CenterWithTiredom extends Center implements Comparable<CenterWithTiredom>
 {
 	private double tiredom = 1.0;
 	
+	//nie jestem pewien czy tylko gaz ma mechanizm przemeczenia
+	private double distance;
+	
 	//mozna ewentualnie to potem sparametryzowac
-	private static final double minTiredom = 0.75;
+	public static final double minTiredom = 0.75;
 
 	
 	public double getTiredom() 
@@ -27,5 +30,22 @@ public class CenterWithTiredom extends Center
 	{
 		this.tiredom+=1/numberOfCenters;
 	}
-	
+
+	public double getDistance() 
+	{
+		return distance;
+	}
+
+	public void setDistance(double distance) 
+	{
+		this.distance = distance;
+	}
+
+	@Override
+	public int compareTo(CenterWithTiredom center) 
+	{
+		if(this.distance>center.distance)return 1;
+		else if(this.distance<center.distance)return -1;
+		return 0;
+	}
 }

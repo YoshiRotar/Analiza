@@ -6,6 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class KMeans extends Clustering
 {
 
+	private ArrayList<Center> centers= new ArrayList<>();
 	boolean forgy;
 	
 	public KMeans(int numberOfCenters, Data data, boolean forgy) 
