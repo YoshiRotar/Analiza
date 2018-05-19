@@ -20,10 +20,12 @@ public class Main
      */
     public static void main(String[] args) throws Exception
     {
+    	/*
     	ArrayList<CenterWithNeighbours> graph = Kohonen.createGridGraph(3, 6);
     	System.out.println("Start");
-        Data d = new Data("./data/inputs.txt",2);
-        Kohonen k = new Kohonen(d, 0.1, 30, 2, graph);
+        Data d = new Data();
+        d.loadFromTextFile("./data/inputs.txt",2);
+        Kohonen k = new Kohonen(d, 0.1, 100, 2, graph);
         k.clusterize();
     	System.out.println("Stop");
     	for(Center center : k.getCenters())
@@ -32,5 +34,11 @@ public class Main
     			System.out.print(coord + ", ");
     		System.out.println();
     	}
+    	*/
+    	System.out.println("Start");
+    	ImageCompressor i = new ImageCompressor("./data/lena.bmp", 3);
+    	i.compress();
+    	i.saveToFile("./data/lenaCompressed.bmp");
+    	System.out.println("Stop");
     }
 }

@@ -9,20 +9,26 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 /**
  *
  * @author student
  */
 public class Data 
 {
-    private final ArrayList<Sample> points = new ArrayList<>();
+    private ArrayList<Sample> points = new ArrayList<>();
 
     public ArrayList<Sample> getPoints() 
     {
 		return points;
 	}
+    
+    public void setPoints(ArrayList<Sample> points) 
+    {
+		this.points = points;
+	}
 
-	public Data(String path, int size) throws Exception
+	public void loadFromTextFile(String path, int size) throws Exception
     {
         File file = new File(path);
         try(Scanner scanner = new Scanner(file))
