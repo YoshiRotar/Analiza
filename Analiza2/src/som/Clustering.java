@@ -16,7 +16,7 @@ public abstract class Clustering
 	protected Data data;
 	protected int numberOfDimensions;
 	
-	public Clustering(int numberOfCenters, Data data) 
+	public Clustering(Data data) 
 	{
 		this.data = data;
 		this.numberOfDimensions=data.getPoints().get(0).getPoint().size();
@@ -24,7 +24,7 @@ public abstract class Clustering
 	
 	protected double distanceOf(ArrayList<Double> point1, ArrayList<Double> point2) throws Exception
 	{
-		if(point1.size()!=point2.size()) throw new Exception("Nie mozna policzyc odleglosci dla punktow o roznej liczbie wspolrzednych");
+		if(point1.size()!=point2.size()) throw new Exception("point1.size = "+point1.size() +" point.size = "+point2.size());
 		double result=0;
 		for(int i=0; i<point1.size(); i++)
 		{

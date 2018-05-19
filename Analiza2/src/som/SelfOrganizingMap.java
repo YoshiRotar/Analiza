@@ -10,9 +10,9 @@ public abstract class SelfOrganizingMap extends Clustering
 	
 	//Nie wiem czy ten konstruktor nie bedzie musial byc inny dla gazu i kogonnena,
 	//najwyzej sie go podzieli na metody i zaimplementuje oddzielnie
-	public SelfOrganizingMap(int numberOfCenters, Data data, double learningRate, int numberOfIterations) 
+	public SelfOrganizingMap(Data data, double learningRate, int numberOfIterations) 
 	{
-		super(numberOfCenters, data);
+		super(data);
 		this.learningRate=learningRate;
 		this.numberOfIterations=numberOfIterations;
 		

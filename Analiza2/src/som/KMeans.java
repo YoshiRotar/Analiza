@@ -7,13 +7,20 @@ public class KMeans extends Clustering
 {
 
 	private ArrayList<Center> centers= new ArrayList<>();
+	
+	public ArrayList<Center> getCenters() 
+	{
+		return centers;
+	}
+
 	boolean forgy;
 	
 	public KMeans(int numberOfCenters, Data data, boolean forgy) 
 	{
-		super(numberOfCenters, data);
+		super(data);
 		for(int i=0; i<numberOfCenters; i++) centers.add(new Center());
 		this.forgy = forgy;
+		init();
 	}
 	
 	private void forgy()
@@ -82,6 +89,7 @@ public class KMeans extends Clustering
 				}
 			}
 			for(int i=0; i<numberOfDimensions; i++) average.set(i, average.get(i)/numberOfSamples);
+			if(numberOfSamples==0) return;
 			center.getCoordinates().clear();
 			center.getCoordinates().addAll(average);
 		}	

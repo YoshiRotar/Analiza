@@ -8,9 +8,14 @@ public class NeuralGas extends SelfOrganizingMap
 	private int numberOfCentersToMove;
 	private ArrayList<CenterWithTiredom> centers= new ArrayList<>();
 	
+	public ArrayList<CenterWithTiredom> getCenters() 
+	{
+		return centers;
+	}
+
 	public NeuralGas(int numberOfCenters, Data data, double learningRate, int numberOfCentersToMove, int  numberOfIterations) throws Exception
 	{
-		super(numberOfCenters, data, learningRate, numberOfIterations);
+		super(data, learningRate, numberOfIterations);
 		ArrayList<Double> minimums = new ArrayList<Double>();
 		ArrayList<Double> maximums = new ArrayList<Double>();
 		findCenterRange(minimums, maximums);
@@ -23,7 +28,7 @@ public class NeuralGas extends SelfOrganizingMap
 			}
 			centers.add(center);
 		}
-		if(numberOfCentersToMove>centers.size()) throw new Exception("Liczba centrow do przesuniecia nie moze byc wieksza od liczby wszystkich centrow");	
+		if(numberOfCentersToMove>=centers.size()) throw new Exception("Liczba centrow do przesuniecia nie moze byc wieksza od liczby wszystkich centrow");	
 		this.numberOfCentersToMove = numberOfCentersToMove;
 	}
 

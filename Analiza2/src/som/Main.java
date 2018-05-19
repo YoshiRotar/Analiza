@@ -5,11 +5,14 @@
  */
 package som;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author student
  */
-public class Main {
+public class Main
+{
 
     /**
      * @param args the command line arguments
@@ -17,11 +20,17 @@ public class Main {
      */
     public static void main(String[] args) throws Exception
     {
+    	ArrayList<CenterWithNeighbours> graph = Kohonen.createGridGraph(3, 6);
     	System.out.println("Start");
         Data d = new Data("./data/inputs.txt",2);
-        NeuralGas k = new NeuralGas(6, d, 0.1, 3, 1000);
+        Kohonen k = new Kohonen(d, 0.1, 30, 2, graph);
         k.clusterize();
     	System.out.println("Stop");
+    	for(Center center : k.getCenters())
+    	{
+    		for(Double coord : center.getCoordinates())
+    			System.out.print(coord + ", ");
+    		System.out.println();
+    	}
     }
-    
 }

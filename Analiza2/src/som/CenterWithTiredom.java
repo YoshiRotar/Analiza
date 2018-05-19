@@ -2,13 +2,13 @@ package som;
 
 public class CenterWithTiredom extends Center implements Comparable<CenterWithTiredom>
 {
-	private double tiredom = 1.0;
+	protected double tiredom = 1.0;
 	
 	//nie jestem pewien czy tylko gaz ma mechanizm przemeczenia
-	private double distance;
+	protected double distance;
 	
 	//mozna ewentualnie to potem sparametryzowac
-	public static final double minTiredom = 0.75;
+	protected static final double minTiredom = 0.75;
 
 	
 	public double getTiredom() 
