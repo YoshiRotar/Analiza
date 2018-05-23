@@ -89,7 +89,16 @@ public class KMeans extends Clustering
 				}
 			}
 			for(int i=0; i<numberOfDimensions; i++) average.set(i, average.get(i)/numberOfSamples);
-			if(numberOfSamples==0) return;
+			if(numberOfSamples==0) 
+			{
+				//Zapobieganie utykania centrow
+				/*
+				int randomNum = ThreadLocalRandom.current().nextInt(0, data.getPoints().size());
+				center.getCoordinates().clear();
+				center.getCoordinates().addAll(data.getPoints().get(randomNum).getPoint());
+				*/
+				return;
+			}
 			center.getCoordinates().clear();
 			center.getCoordinates().addAll(average);
 		}	
@@ -97,9 +106,23 @@ public class KMeans extends Clustering
 	
 	public void clusterize() throws Exception
 	{
+		if(errorLogPath!=null) clearLog(errorLogPath);
+		if(centersLogPath!=null) clearLog(centersLogPath);
 		while(findMemberships())
 		{
 			moveCenters();
+			log(Double.toString(error()), errorLogPath);
 		}
+		String coords = "";
+		for(Center center : centers)
+		{
+			for(int i=0; i<center.getCoordinates().size(); i++)
+			{
+				coords+=center.getCoordinates().get(i);
+				if(i!=(center.getCoordinates().size()-1)) coords+=", ";
+			}
+			coords+="\n";
+		}
+		log(coords, centersLogPath);
 	}
 }

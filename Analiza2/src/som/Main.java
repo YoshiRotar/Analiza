@@ -20,25 +20,35 @@ public class Main
      */
     public static void main(String[] args) throws Exception
     {
+    	
+    	//ArrayList<CenterWithNeighbours> graph = Kohonen.createGridGraph(3, 6);
+    	//System.out.println("Start");
     	/*
-    	ArrayList<CenterWithNeighbours> graph = Kohonen.createGridGraph(3, 6);
-    	System.out.println("Start");
         Data d = new Data();
         d.loadFromTextFile("./data/inputs.txt",2);
-        Kohonen k = new Kohonen(d, 0.1, 100, 2, graph);
-        k.clusterize();
-    	System.out.println("Stop");
-    	for(Center center : k.getCenters())
-    	{
-    		for(Double coord : center.getCoordinates())
-    			System.out.print(coord + ", ");
-    		System.out.println();
-    	}
+        
+        for(int i=1; i<=5; i++)
+        {
+        	ArrayList<CenterWithNeighbours> graph = Kohonen.createGridGraph(3, 10);
+        	//NeuralGas k = new NeuralGas(30, d, 0.9, 4, 30);
+        	Kohonen k = new Kohonen(d, 0.9, 30, 1, graph);
+        	k.setErrorLogPath("./results/4/learningRate/kohonen/09/errors"+i+".txt");
+        	k.setCentersLogPath("./results/4/learningRate/kohonen/09/centers"+i+".txt");
+        	k.clusterize();
+        }
+        System.out.println("stop");
     	*/
+    	
+    	
     	System.out.println("Start");
-    	ImageCompressor i = new ImageCompressor("./data/lena.bmp", 3);
-    	i.compress();
-    	i.saveToFile("./data/lenaCompressed.bmp");
+    	for(int i=1; i<=5; i++)
+    	{
+    		ImageCompressor c = new ImageCompressor("./data/lena.bmp", 4, 50, "./results/5/4x4/50/errors"+i+".txt");
+        	c.compress();
+        	c.saveToFile("./results/5/4x4/50/lena"+i+".bmp");
+        	
+    	}
     	System.out.println("Stop");
+    	
     }
 }

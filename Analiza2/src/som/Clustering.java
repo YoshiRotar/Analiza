@@ -5,6 +5,11 @@
  */
 package som;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -15,11 +20,41 @@ public abstract class Clustering
 {
 	protected Data data;
 	protected int numberOfDimensions;
+	protected Path errorLogPath = null;
+	protected Path centersLogPath = null;
+	protected String stringToLog = "";
+	
+	public void setErrorLogPath(String path) 
+	{
+		this.errorLogPath = Paths.get(path);
+	}
+	
+	public void setCentersLogPath(String path) 
+	{
+		this.centersLogPath = Paths.get(path);
+	}
 	
 	public Clustering(Data data) 
 	{
 		this.data = data;
 		this.numberOfDimensions=data.getPoints().get(0).getPoint().size();
+	}
+	
+	protected void clearLog(Path logPath)
+	{
+		FileWriter writer;
+		try 
+		{
+			File file = logPath.getParent().toFile();
+			file.mkdirs();
+			writer = new FileWriter(logPath.toFile());
+			writer.write("");
+			writer.close();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	protected double distanceOf(ArrayList<Double> point1, ArrayList<Double> point2) throws Exception
@@ -49,7 +84,28 @@ public abstract class Clustering
 				result += difference*difference;
 			}
 		}
+		//System.out.println(data.getPoints().get(0).getPoint().get(0));
+		//System.out.println(data.getPoints().get(0).getCenter());
+		//System.out.println(result/data.getPoints().size());
 		return result/data.getPoints().size();
+	}
+	
+	protected void log(String text, Path logPath)
+	{
+		if(logPath==null) return;
+		File file = logPath.getParent().toFile();
+		file.mkdirs();
+		FileWriter writer;
+		try 
+		{
+			writer =  new FileWriter(logPath.toFile(),true);
+			writer.write(text+"\n");
+			writer.close();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public abstract void clusterize() throws Exception;

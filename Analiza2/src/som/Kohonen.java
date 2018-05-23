@@ -63,8 +63,6 @@ public class Kohonen extends SelfOrganizingMap
 		{
 			double increment = learningRate*Math.exp(-level)*(sample.getPoint().get(k)-center.getCoordinates().get(k));
 			center.getCoordinates().set(k, center.getCoordinates().get(k)+increment);
-			if(level==0) center.tireTheWinner();
-			else center.tireTheLoser(centers.size());
 		}
 	}
 	
@@ -76,9 +74,22 @@ public class Kohonen extends SelfOrganizingMap
 			{
 				center.setDistance(distanceOf(sample.getPoint(), center.getCoordinates()));
 			}
-			CenterWithNeighbours winner = Collections.min(centers);
+			Collections.sort(centers);
+			CenterWithNeighbours winner;
+			int i=0;
+			do
+			{
+				winner = centers.get(i);
+				i++;
+			}
+			while(i-1<centers.size() && centers.get(i-1).getTiredom()<CenterWithTiredom.minTiredom);
 			sample.setCenter(winner);
-			if(winner.getTiredom()>=CenterWithTiredom.minTiredom) moveOneCenter(winner, 0, sample);
+			for(CenterWithTiredom center : centers)
+			{
+				if(center==winner)center.tireTheWinner();
+				else center.tireTheLoser(centers.size());
+			}
+			moveOneCenter(winner, 0, sample);
 			for(CenterWithNeighbours center : winner.getFirstLevelNeighbours()) moveOneCenter(center, 1, sample);
 			if(levelOfNeighbourhood>1)for(CenterWithNeighbours center : winner.getSecondLevelNeighbours()) moveOneCenter(center, 2, sample);
 		}
@@ -87,7 +98,24 @@ public class Kohonen extends SelfOrganizingMap
 	@Override
 	public void clusterize() throws Exception 
 	{
-		for(int i=0; i<numberOfIterations; i++) moveCenters();		
+		if(errorLogPath!=null) clearLog(errorLogPath);
+		if(centersLogPath!=null) clearLog(centersLogPath);
+		for(int i=0; i<numberOfIterations; i++) 
+		{
+			moveCenters();
+			log(Double.toString(error()), errorLogPath);
+		}
+		String coords = "";
+		for(Center center : centers)
+		{
+			for(int i=0; i<center.getCoordinates().size(); i++)
+			{
+				coords+=center.getCoordinates().get(i);
+				if(i!=(center.getCoordinates().size()-1)) coords+=", ";
+			}
+			coords+="\n";
+		}
+		log(coords, centersLogPath);
 	}
 
 }

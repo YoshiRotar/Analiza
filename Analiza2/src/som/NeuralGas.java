@@ -41,20 +41,26 @@ public class NeuralGas extends SelfOrganizingMap
 				center.setDistance(distanceOf(sample.getPoint(), center.getCoordinates()));
 			}
 			Collections.sort(centers);
-			sample.setCenter(centers.get(0));
-			for(int j=0; j<numberOfCentersToMove; j++)
+			int winnerIndex=-1;
+			for(int j=0, centersMoved=0; j<centers.size(); j++)
 			{
-				ArrayList<Double> coordinatesToChange = centers.get(j).getCoordinates();
-				if(centers.get(j).getTiredom()>=CenterWithTiredom.minTiredom)
+				if(centers.get(j).getTiredom()>=CenterWithTiredom.minTiredom && centersMoved<numberOfCentersToMove)
 				{
+					if(centersMoved==0) 
+					{
+						winnerIndex = j;
+
+						sample.setCenter(centers.get(winnerIndex));
+						centers.get(winnerIndex).tireTheWinner();
+					}
+					centersMoved++;
 					for(int k=0; k<numberOfDimensions; k++)
 					{
-						coordinatesToChange.set(k, coordinatesToChange.get(k)+(learningRate*Math.exp(-j)*(sample.getPoint().get(k)-coordinatesToChange.get(k))));
+						double increment = learningRate*Math.exp(-centersMoved)*(sample.getPoint().get(k)-centers.get(j).getCoordinates().get(k));
+						centers.get(j).getCoordinates().set(k, centers.get(j).getCoordinates().get(k)+increment);
 					}
-					
-					if(j==0) centers.get(j).tireTheWinner();
-					else centers.get(j).tireTheLoser(centers.size());
 				}	
+				if(j!=winnerIndex) centers.get(j).tireTheLoser(centers.size());
 			}
 		}
 	}
@@ -62,7 +68,24 @@ public class NeuralGas extends SelfOrganizingMap
 	@Override
 	public void clusterize() throws Exception 
 	{
-		for(int i=0; i<numberOfIterations; i++) moveCenters();
+		if(errorLogPath!=null) clearLog(errorLogPath);
+		if(centersLogPath!=null) clearLog(centersLogPath);
+		for(int i=0; i<numberOfIterations; i++) 
+		{
+			moveCenters();
+			log(Double.toString(error()), errorLogPath);
+		}
+		String coords = "";
+		for(Center center : centers)
+		{
+			for(int i=0; i<center.getCoordinates().size(); i++)
+			{
+				coords+=center.getCoordinates().get(i);
+				if(i!=(center.getCoordinates().size()-1)) coords+=", ";
+			}
+			coords+="\n";
+		}
+		log(coords, centersLogPath);
 	}
 	
 }

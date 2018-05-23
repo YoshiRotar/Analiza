@@ -10,14 +10,19 @@ import javax.imageio.ImageIO;
 
 public class ImageCompressor 
 {
-	Data data = new Data();
-	BufferedImage img = null;
-	int gridWidth;
+	private Data data = new Data();
+	private BufferedImage img = null;
+	private int gridWidth;
+	private String errorLogPath;
+	private String centersLogPath;
+	private int numberOfCenters;
 	
-	ImageCompressor(String path, int gridWidth) throws Exception
+	ImageCompressor(String path, int gridWidth, int numberOfCenters, String errorLogPath) throws Exception
 	{
 		this.gridWidth = gridWidth;
 		loadFromImage(path);
+		this.errorLogPath = errorLogPath;
+		this.numberOfCenters = numberOfCenters;
 	}
 	
 	private double average(ArrayList<Double> list)
@@ -79,7 +84,8 @@ public class ImageCompressor
 	public void compress() throws Exception
 	{
 		if(data.getPoints().size()==0)throw new Exception("Nalezy wczytac plik bmp przed rozpoaczeciem kompresji");
-		KMeans clustering= new KMeans(75, data, true);
+		KMeans clustering= new KMeans(numberOfCenters, data, true);
+		clustering.setErrorLogPath(errorLogPath);
 
 		clustering.clusterize();
 

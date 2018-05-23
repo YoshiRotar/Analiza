@@ -4,7 +4,6 @@ public class CenterWithTiredom extends Center implements Comparable<CenterWithTi
 {
 	protected double tiredom = 1.0;
 	
-	//nie jestem pewien czy tylko gaz ma mechanizm przemeczenia
 	protected double distance;
 	
 	//mozna ewentualnie to potem sparametryzowac
@@ -28,7 +27,7 @@ public class CenterWithTiredom extends Center implements Comparable<CenterWithTi
 	
 	public void tireTheLoser(int numberOfCenters)
 	{
-		this.tiredom+=1/numberOfCenters;
+		this.tiredom+=(1.0/numberOfCenters);
 	}
 
 	public double getDistance() 
