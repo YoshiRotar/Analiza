@@ -14,7 +14,6 @@ public class ImageCompressor
 	private BufferedImage img = null;
 	private int gridWidth;
 	private String errorLogPath;
-	private String centersLogPath;
 	private int numberOfCenters;
 	
 	ImageCompressor(String path, int gridWidth, int numberOfCenters, String errorLogPath) throws Exception

@@ -22,24 +22,25 @@ public class Main
     {
     	
     	//ArrayList<CenterWithNeighbours> graph = Kohonen.createGridGraph(3, 6);
-    	//System.out.println("Start");
-    	/*
+    	System.out.println("Start");
+    	
         Data d = new Data();
         d.loadFromTextFile("./data/inputs.txt",2);
         
         for(int i=1; i<=5; i++)
         {
-        	ArrayList<CenterWithNeighbours> graph = Kohonen.createGridGraph(3, 10);
+        	//ArrayList<CenterWithNeighbours> graph = Kohonen.createGridGraph(3, 10);
         	//NeuralGas k = new NeuralGas(30, d, 0.9, 4, 30);
-        	Kohonen k = new Kohonen(d, 0.9, 30, 1, graph);
-        	k.setErrorLogPath("./results/4/learningRate/kohonen/09/errors"+i+".txt");
-        	k.setCentersLogPath("./results/4/learningRate/kohonen/09/centers"+i+".txt");
+        	//Kohonen k = new Kohonen(d, 0.9, 30, 1, graph);
+        	KMeans k = new KMeans(30, d, false);
+        	k.setErrorLogPath("./results/3/k30/randomPartition/errors"+i+".txt");
+        	k.setCentersLogPath("./results/3/k30/randomPartition/centers"+i+".txt");
         	k.clusterize();
         }
         System.out.println("stop");
-    	*/
     	
     	
+    	/*
     	System.out.println("Start");
     	for(int i=1; i<=5; i++)
     	{
@@ -49,6 +50,6 @@ public class Main
         	
     	}
     	System.out.println("Stop");
-    	
+    	*/
     }
 }
