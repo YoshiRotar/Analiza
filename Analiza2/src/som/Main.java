@@ -32,9 +32,9 @@ public class Main
         	//ArrayList<CenterWithNeighbours> graph = Kohonen.createGridGraph(3, 10);
         	//NeuralGas k = new NeuralGas(30, d, 0.9, 4, 30);
         	//Kohonen k = new Kohonen(d, 0.9, 30, 1, graph);
-        	KMeans k = new KMeans(30, d, false);
-        	k.setErrorLogPath("./results/3/k30/randomPartition/errors"+i+".txt");
-        	k.setCentersLogPath("./results/3/k30/randomPartition/centers"+i+".txt");
+        	KMeans k = new KMeans(30, d, true);
+        	k.setErrorLogPath("./results/3/k30/forgy/errors"+i+".txt");
+        	k.setCentersLogPath("./results/3/k30/forgy/centers"+i+".txt");
         	k.clusterize();
         }
         System.out.println("stop");

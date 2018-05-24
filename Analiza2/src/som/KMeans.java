@@ -89,18 +89,12 @@ public class KMeans extends Clustering
 				}
 			}
 			for(int i=0; i<numberOfDimensions; i++) average.set(i, average.get(i)/numberOfSamples);
-			if(numberOfSamples==0) 
+			if(numberOfSamples!=0) 
 			{
-				//Zapobieganie utykania centrow
-				/*
-				int randomNum = ThreadLocalRandom.current().nextInt(0, data.getPoints().size());
 				center.getCoordinates().clear();
-				center.getCoordinates().addAll(data.getPoints().get(randomNum).getPoint());
-				*/
-				return;
+				center.getCoordinates().addAll(average);
 			}
-			center.getCoordinates().clear();
-			center.getCoordinates().addAll(average);
+			
 		}	
 	}
 	
